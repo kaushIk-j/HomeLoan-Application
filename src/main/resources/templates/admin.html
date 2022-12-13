@@ -1,0 +1,148 @@
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous" defer></script>
+
+<style>
+	body{
+		background:url("/images/bg.jpg") no-repeat;
+		background-position: center;
+   		 background-size: cover;
+	}
+</style>
+
+</head>
+
+<body class="container-fluid px-0">
+<div class="d-flex align-items-center justify-content-between mb-5 bg-secondary px-5">
+<h3>
+	Admin
+</h3>
+<nav>
+<ul class="nav justify-content-end align-items-center">
+  <li class="nav-item">
+    <a class="btn btn-sm btn-dark" aria-current="page" href="/land-verification/create">Create Land Officer</a>
+  </li>
+  <li class="nav-item">
+    <a class="btn btn-sm btn-dark m-4" href="/finance-verification/create">Create Finance Officer</a>
+  </li>
+  <li class="nav-item">
+    <a class="btn btn-sm btn-dark" href="/user/auth">Sign out</a>
+  </li>
+		
+</ul>
+</nav>
+</div>
+
+
+<div class=" mx-auto shadow p-3 my-auto bg-body rounded w-75 mb-5">
+<h4 class="mb-3">Application Users</h4>
+<div th:if="${not #lists.isEmpty(customers)}" class="table-responsive">
+<table class="table table-sm align-middle">
+  <thead class="table-dark">
+  <tr class="align-middle">
+      <th scope="col">CustomerId</th>
+      <th scope="col">CustomerName</th>
+      <th scope="col">MobileNumber</th>
+      <th scope="col">Email Id</th>
+      <th scope="col">DateOfBirth</th>
+      <th scope="col">Gender</th>
+      <th scope="col">Nationality</th>
+      <th scope="col">AadharNumber</th>
+      <th scope="col">PAN Number</th>
+    </tr>
+  </thead>
+  <tbody class="text-center">
+    <tr th:each="customer : ${customers}">
+      <th scope="row" th:text="${customer.customerId}"></th>
+      <td  th:text="${customer.customerName}"></td>
+      <td  th:text="${customer.mobileNumber}"></td>
+      <td  th:text="${customer.emailId}">NA</td>
+      <td  th:text="${#strings.arraySplit(customer.dateOfBirth,' ')[0]}">NA</td>
+      <td  th:text="${customer.gender}">NA</td>
+      <td  th:text="${customer.nationality}">NA</td>
+      <td  th:text="${customer.aadharNumber}">NA</td>
+      <td th:text="${customer.panNumber}">Pending</td>
+    </tr>
+   
+  </tbody>
+</table>
+</div>
+<div th:if="${#lists.isEmpty(customers)}">
+<p>No Loan Applied yet.</p>
+</div>
+</div>
+
+
+
+<div class=" mx-auto shadow p-3 my-auto bg-body rounded w-75 ">
+<h4 class="mb-3">Load Applied</h4>
+<div th:if="${not #lists.isEmpty(loanApplications)}" class="table-responsive">
+<table class="table table-sm align-middle">
+  <thead class="table-dark">
+  <tr class="align-middle">
+      <th scope="col">ApplicationId</th>
+      <th scope="col">ApplicationDate</th>
+      <th scope="col">LoanAppliedAmount</th>
+      <th scope="col">LoanApprovedAmount</th>
+      <th scope="col">LandVerificationApproval</th>
+      <th scope="col">FinanceVerificationApproval</th>
+      <th scope="col">AdminApproval</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody class="text-center">
+    <tr th:each="loanApplication : ${loanApplications}">
+      <th scope="row" th:text="${loanApplication.applicationId}"></th>
+      <td  th:text="${loanApplication.applicationDate}"></td>
+      <td  th:text="${loanApplication.loanAppliedAmount}"></td>
+      <td  th:text="${loanApplication.loanApprovedAmount}">NA</td>
+      <td><span th:text="${loanApplication.landVerificationApproval}" th:class="'badge '+ ${loanApplication.landVerificationApproval ? 'text-bg-success':'text-bg-warning'} +' ' + ${ loanApplication.landVerificationApproval ? (loanApplication.status == 'REJECTED') ? 'text-bg-danger' :'':'' }">Success</span></td>
+      <td><span th:text="${loanApplication.financeVerificationApproval}" th:class="'badge '+ ${loanApplication.financeVerificationApproval ? 'text-bg-success':'text-bg-warning'} +' ' + ${ loanApplication.financeVerificationApproval ? (loanApplication.status == 'REJECTED') ? 'text-bg-danger' :'':'' }">Success</span></td>
+      <td><span th:text="${loanApplication.adminApproval}" th:class="'badge '+ ${loanApplication.adminApproval ? 'text-bg-success':'text-bg-warning'} +' ' + ${ !loanApplication.adminApproval ? (loanApplication.status == 'REJECTED') ? 'text-bg-danger' :'':'' }">Success</span></td>
+      <td th:text="${loanApplication.status}">Pending</td>
+    </tr>
+   
+  </tbody>
+</table>
+</div>
+<div th:if="${#lists.isEmpty(loanApplications)}">
+<p>No Loan Applied yet.</p>
+</div>
+</div>
+
+
+
+</div>
+
+</body>
+
+
+<div class="container d-flex items-center justify-content-center h-100">
+<form class="w-50 mx-auto shadow p-3 my-auto bg-body rounded" th:action="@{/admin/update-application-status}" method="post" th:object="${user}">
+  <div class="mb-4"><h3>Update Application Status</h3></div>
+ 
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Application Id</label>
+    <input type="text" name="applicationId" class="form-control" required>
+  </div>
+  <div class="mb-3">
+   <div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" name="AdminApproval" id="inlineRadio1" value="true" required>
+  <label class="form-check-label" for="inlineRadio1">Approve</label>
+	</div>
+	<div class="form-check form-check-inline">
+	  <input class="form-check-input" type="radio" name="AdminApproval" id="inlineRadio2" value="false" required>
+	  <label class="form-check-label" for="inlineRadio2">Reject</label>
+	</div>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
+
+
+
+
+</html>

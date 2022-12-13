@@ -1,0 +1,87 @@
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous" defer></script>
+
+<style>
+	body{
+		background:url("/images/bg.jpg") no-repeat;
+		background-position: center;
+   		 background-size: cover;
+	}
+</style>
+
+</head>
+
+<body class="container-fluid px-0 bg-light">
+<div class="bg-secondary mb-5 py-2">
+<nav class="w-75 mx-auto d-flex align-items-center justify-content-between">
+<h4>Customer</h4>
+<ul class="nav justify-content-end">
+
+  <li class="nav-item">
+    <a class="btn btn-sm btn-primary m-3" th:href="@{/customer/edit/{userId}(userId=${userId})}">Edit Profile</a>
+  </li>
+
+ <li class="nav-item">
+    <a class="btn btn-sm btn-dark m-3" href="/user/auth">Sign out</a>
+  </li>
+</ul>
+</nav>
+</div>
+
+<div class="w-75 mx-auto">
+
+<div class=" mx-auto shadow p-3 my-auto bg-body rounded mb-4">
+	<a type="button" class="btn btn-sm btn-primary" th:href="@{/loan-application/loan-eligiblity-view?userId={userId}(userId=${userId})}">Check Loan Eligiblity</a>
+	
+</div>
+
+
+
+<div class=" mx-auto shadow p-3 my-auto bg-body rounded">
+<h4 class="mb-3">Loan Applied</h4>
+<div th:if="${not #lists.isEmpty(loanApplications)}" class="table-responsive">
+<table class="table table-sm align-middle">
+  <thead class="table-dark">
+  <tr class="align-middle">
+      <th scope="col">Application Id</th>
+      <th scope="col">Application Date</th>
+      <th scope="col">LoanApplied Amount</th>
+      <th scope="col">LoanApproved Amount</th>
+      <th scope="col">Land Verification Approval</th>
+      <th scope="col">Finance Verification Approval</th>
+      <th scope="col">Admin Approval</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody class="text-center">
+    <tr th:each="loanApplication : ${loanApplications}">
+      <th scope="row" th:text="${loanApplication.applicationId}"></th>
+      <td  th:text="${loanApplication.applicationDate}"></td>
+      <td  th:text="${loanApplication.loanAppliedAmount}"></td>
+      <td  th:text="${loanApplication.loanApprovedAmount}">NA</td>
+      <td><span th:text="${loanApplication.landVerificationApproval}" th:class="'badge '+ ${loanApplication.landVerificationApproval ? 'text-bg-success':'text-bg-warning'} +' ' + ${ loanApplication.landVerificationApproval == 'Rejected' && 'text-bg-danger'}">Success</span></td>
+      <td><span th:text="${loanApplication.financeVerificationApproval}" th:class="'badge '+ ${loanApplication.financeVerificationApproval ? 'text-bg-success':'text-bg-warning'} +' ' + ${ loanApplication.financeVerificationApproval == 'Rejected' && 'text-bg-danger'}">Success</span></td>
+      <td><span th:text="${loanApplication.adminApproval}" th:class="'badge '+ ${loanApplication.adminApproval ? 'text-bg-success':'text-bg-warning'} +' ' + ${ !loanApplication.adminApproval ? (loanApplication.status == 'REJECTED') ? 'text-bg-danger' :'':'' }">Success</span></td>
+      <td th:text="${loanApplication.status}">Pending</td>
+    </tr>
+   
+  </tbody>
+</table>
+</div>
+<div th:if="${#lists.isEmpty(loanApplications)}">
+<p>No Loan Applied yet.</p>
+</div>
+</div>
+
+
+</div>
+
+
+</body>
+
+
+</html>
